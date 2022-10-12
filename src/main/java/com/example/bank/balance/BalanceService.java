@@ -9,16 +9,19 @@ import org.springframework.stereotype.Service;
 public class BalanceService {
     private final BalanceRepository balanceRepository;
 
+    public Balance getBalance(Account account, String currency){
+        return balanceRepository.findByCurrencyAndAccountId(currency, account.getId()).get(0);
+    }
+
     public Balance createBalance(Account account, String currency){
         Balance balance = Balance.builder()
                 .account(account)
                 .currency(currency)
-                .amount(0L)
+                .amount((float) 0)
                 .build();
 
         balanceRepository.saveAndFlush(balance);
 
         return balance;
     }
-
 }

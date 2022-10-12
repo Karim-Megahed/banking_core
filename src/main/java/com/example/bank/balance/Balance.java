@@ -1,15 +1,18 @@
 package com.example.bank.balance;
 
 import com.example.bank.account.Account;
+import com.example.bank.transaction.Transaction;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
-@Data
+//@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -35,7 +38,13 @@ public class Balance {
     )
     @JsonBackReference
     private Account account;
-    private Long amount;
+    private Float amount;
     private String currency;
-
+//    @OneToMany(
+//            mappedBy = "balance",
+//            orphanRemoval = true,
+//            cascade = CascadeType.ALL
+//    )
+//    @JsonManagedReference
+//    private List<Transaction> transactions = new ArrayList<>();
 }

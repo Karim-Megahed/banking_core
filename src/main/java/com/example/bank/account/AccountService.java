@@ -12,7 +12,6 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-
 public class AccountService {
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
