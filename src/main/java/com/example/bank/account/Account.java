@@ -1,19 +1,23 @@
 package com.example.bank.account;
 
+import com.example.bank.balance.Balance;
 import com.example.bank.customer.Customer;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "accounts")
 public class Account {
     @Id
     @SequenceGenerator(
@@ -30,5 +34,11 @@ public class Account {
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
     private String country;
-    private LocalDateTime createdAt;
+    @OneToMany(
+            mappedBy = "account",
+            orphanRemoval = true,
+            cascade = CascadeType.ALL
+    )
+    @JsonManagedReference
+    private List<Balance> balances = new ArrayList<>();
 }

@@ -1,5 +1,7 @@
 package com.example.bank.account;
 
-public record AccountRequest(Integer customerId, String country) {
+import java.util.List;
+
+public record AccountRequest(Integer customerId, String country, List<String> currencies) {
 
 }

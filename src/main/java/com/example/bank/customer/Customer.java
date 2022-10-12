@@ -12,6 +12,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "customers")
 public class Customer {
     @Id
     @SequenceGenerator(
@@ -27,5 +28,4 @@ public class Customer {
     private String firstName;
     private String lastName;
     private String email;
-
 }
