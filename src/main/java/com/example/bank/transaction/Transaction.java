@@ -33,7 +33,7 @@ public class Transaction {
 
     private Integer id;
     private Float amount;
-    @Enumerated(EnumType.ORDINAL)
+    @Enumerated(EnumType.STRING)
     private TransactionDirection direction;
     private String description;
     @ManyToOne

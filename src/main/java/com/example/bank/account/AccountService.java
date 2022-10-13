@@ -1,6 +1,7 @@
 package com.example.bank.account;
 
 import com.example.bank.balance.Balance;
+import com.example.bank.balance.BalanceCurrency;
 import com.example.bank.balance.BalanceService;
 import com.example.bank.customer.Customer;
 import com.example.bank.customer.CustomerRepository;
@@ -22,7 +23,7 @@ public class AccountService {
     }
 
     public Account createAccount(AccountRequest request){
-        Customer customer = customerRepository.findById(request.customerId()).get();
+        Customer customer = customerRepository.findById(request.getCustomerId()).get();
         List<Balance> balances = new ArrayList<>();
 
         if(customer.getId() == null){
@@ -31,12 +32,12 @@ public class AccountService {
 
         Account account = Account.builder()
                 .customer(customer)
-                .country(request.country())
+                .country(request.getCountry())
                 .build();
 
         accountRepository.saveAndFlush(account);
 
-        for (String currency : request.currencies()) {
+        for (BalanceCurrency currency : request.getCurrencies()) {
             balances.add(balanceService.createBalance(account, currency));
         }
 

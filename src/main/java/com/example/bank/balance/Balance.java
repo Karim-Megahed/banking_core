@@ -39,7 +39,8 @@ public class Balance {
     @JsonBackReference
     private Account account;
     private Float amount;
-    private String currency;
+    @Enumerated(EnumType.STRING)
+    private BalanceCurrency currency;
 //    @OneToMany(
 //            mappedBy = "balance",
 //            orphanRemoval = true,

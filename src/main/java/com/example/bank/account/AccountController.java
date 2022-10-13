@@ -5,6 +5,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
+import javax.validation.Valid;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/v1/accounts")
@@ -17,7 +19,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createAccount(@RequestBody AccountRequest accountRequest){
+    public ResponseEntity<Object> createAccount(@RequestBody @Valid AccountRequest accountRequest){
         try{
             Account account = accountService.createAccount(accountRequest);
 

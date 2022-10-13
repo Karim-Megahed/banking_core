@@ -13,7 +13,7 @@ public class BalanceService {
         return balanceRepository.findByCurrencyAndAccountId(currency, account.getId()).get(0);
     }
 
-    public Balance createBalance(Account account, String currency){
+    public Balance createBalance(Account account, BalanceCurrency currency){
         Balance balance = Balance.builder()
                 .account(account)
                 .currency(currency)
