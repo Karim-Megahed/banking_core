@@ -1,5 +1,6 @@
 package com.example.bank.transaction;
 
+import com.example.bank.exception.AccountNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,8 +23,8 @@ public class TransactionController {
             Transaction transaction = transactionService.createTransaction(transactionRequest);
 
             return new ResponseEntity<>(transaction, HttpStatus.CREATED);
-        }catch (IllegalStateException exception){
-            return new ResponseEntity<>("Account not found", HttpStatus.NOT_FOUND);
+        } catch (AccountNotFoundException exception) {
+            throw new RuntimeException(exception);
         }
     }
 }

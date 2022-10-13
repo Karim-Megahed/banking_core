@@ -5,6 +5,7 @@ import com.example.bank.balance.BalanceCurrency;
 import com.example.bank.balance.BalanceService;
 import com.example.bank.customer.Customer;
 import com.example.bank.customer.CustomerRepository;
+import com.example.bank.exception.AccountNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,8 +19,8 @@ public class AccountService {
     private final CustomerRepository customerRepository;
     private final BalanceService balanceService;
 
-    public Account getAccount(Integer id){
-        return accountRepository.findById(id).get();
+    public Account getAccount(Integer id) throws AccountNotFoundException {
+        return accountRepository.findById(id).orElseThrow(() ->  new AccountNotFoundException("Account not found!"));
     }
 
     public Account createAccount(AccountRequest request){

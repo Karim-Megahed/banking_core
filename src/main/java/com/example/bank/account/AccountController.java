@@ -1,5 +1,6 @@
 package com.example.bank.account;
 
+import com.example.bank.exception.AccountNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +15,7 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping(path = "{customerId}")
-    public Account getAccount(@PathVariable("customerId") Integer customerId){
+    public Account getAccount(@PathVariable("customerId") Integer customerId) throws AccountNotFoundException {
         return accountService.getAccount(customerId);
     }
 

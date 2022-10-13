@@ -5,6 +5,7 @@ import com.example.bank.account.AccountService;
 import com.example.bank.balance.Balance;
 import com.example.bank.balance.BalanceRepository;
 import com.example.bank.balance.BalanceService;
+import com.example.bank.exception.AccountNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +17,7 @@ public class TransactionService {
     private final BalanceService balanceService;
     private final AccountService accountService;
 
-    public Transaction createTransaction(TransactionRequest request){
+    public Transaction createTransaction(TransactionRequest request) throws AccountNotFoundException {
         Account account = accountService.getAccount(request.accountId());
         Balance balance = balanceService.getBalance(account, request.currency());
         Float newAmount = request.direction() == TransactionDirection.IN
