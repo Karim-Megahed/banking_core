@@ -25,8 +25,8 @@ public class ApplicationExceptionHandler {
     }
 
     @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(AccountNotFoundException.class)
-    public Map<String, String> handleBusinessException(AccountNotFoundException exception) {
+    @ExceptionHandler(ModelNotFoundException.class)
+    public Map<String, String> handleBusinessException(ModelNotFoundException exception) {
         Map<String, String> errorMap = new HashMap<>();
         errorMap.put("error", exception.getMessage());
         return errorMap;

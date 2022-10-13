@@ -3,6 +3,7 @@ package com.example.bank.customer;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -17,7 +18,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public void createCustomer(@RequestBody CustomerCreationRequest customerCreationRequest){
+    public void createCustomer(@RequestBody @Valid CustomerRequest customerCreationRequest){
         customerService.createCustomer(customerCreationRequest);
     }
 }

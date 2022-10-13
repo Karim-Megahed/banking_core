@@ -14,11 +14,11 @@ public class CustomerService {
         return customerRepository.findAll();
     }
 
-    public void createCustomer(CustomerCreationRequest request){
+    public void createCustomer(CustomerRequest request){
         Customer customer = Customer.builder()
-                .firstName(request.firstName())
-                .lastName(request.lastName())
-                .email(request.email())
+                .firstName(request.getFirstName())
+                .lastName(request.getLastName())
+                .email(request.getEmail())
                 .build();
 
         customerRepository.saveAndFlush(customer);

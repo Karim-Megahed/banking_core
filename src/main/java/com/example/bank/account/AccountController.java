@@ -1,6 +1,6 @@
 package com.example.bank.account;
 
-import com.example.bank.exception.AccountNotFoundException;
+import com.example.bank.exception.ModelNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping(path = "{customerId}")
-    public ResponseEntity<AccountResponse> getAccount(@PathVariable("customerId") Integer customerId) throws AccountNotFoundException {
+    public ResponseEntity<AccountResponse> getAccount(@PathVariable("customerId") Integer customerId) throws ModelNotFoundException {
         Account account = accountService.getAccount(customerId);
         AccountResponse response = new AccountResponse(account.getId(), account.getCustomer().getId(), account.getBalances());
 
@@ -23,7 +23,7 @@ public class AccountController {
     }
 
     @PostMapping
-    public ResponseEntity<AccountResponse> createAccount(@RequestBody @Valid AccountRequest accountRequest){
+    public ResponseEntity<AccountResponse> createAccount(@RequestBody @Valid AccountRequest accountRequest) throws ModelNotFoundException {
         Account account = accountService.createAccount(accountRequest);
         AccountResponse response = new AccountResponse(account.getId(), account.getCustomer().getId(), account.getBalances());
 

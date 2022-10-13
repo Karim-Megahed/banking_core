@@ -1,10 +1,12 @@
 package com.example.bank.transaction;
 
-import com.example.bank.exception.AccountNotFoundException;
+import com.example.bank.exception.ModelNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 
 @RestController
 @AllArgsConstructor
@@ -18,12 +20,12 @@ public class TransactionController {
     }
 
     @PostMapping
-    public ResponseEntity<Object> createTransaction(@RequestBody TransactionRequest transactionRequest){
+    public ResponseEntity<Object> createTransaction(@RequestBody @Valid TransactionRequest transactionRequest){
         try{
             Transaction transaction = transactionService.createTransaction(transactionRequest);
 
             return new ResponseEntity<>(transaction, HttpStatus.CREATED);
-        } catch (AccountNotFoundException exception) {
+        } catch (ModelNotFoundException exception) {
             throw new RuntimeException(exception);
         }
     }

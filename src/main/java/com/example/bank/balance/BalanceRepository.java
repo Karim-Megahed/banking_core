@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface BalanceRepository extends JpaRepository<Balance, Integer> {
-    List<Balance> findByCurrencyAndAccountId(String currency, Integer accountId);
+    List<Balance> findByCurrencyAndAccountId(BalanceCurrency currency, Integer accountId);
 }

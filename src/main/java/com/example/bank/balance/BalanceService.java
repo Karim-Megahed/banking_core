@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public class BalanceService {
     private final BalanceRepository balanceRepository;
 
-    public Balance getBalance(Account account, String currency){
+    public Balance getBalance(Account account, BalanceCurrency currency){
         return balanceRepository.findByCurrencyAndAccountId(currency, account.getId()).get(0);
     }
 
