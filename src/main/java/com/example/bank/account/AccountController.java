@@ -15,18 +15,18 @@ public class AccountController {
     private final AccountService accountService;
 
     @GetMapping(path = "{customerId}")
-    public Account getAccount(@PathVariable("customerId") Integer customerId) throws AccountNotFoundException {
-        return accountService.getAccount(customerId);
+    public ResponseEntity<AccountResponse> getAccount(@PathVariable("customerId") Integer customerId) throws AccountNotFoundException {
+        Account account = accountService.getAccount(customerId);
+        AccountResponse response = new AccountResponse(account.getId(), account.getCustomer().getId(), account.getBalances());
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Object> createAccount(@RequestBody @Valid AccountRequest accountRequest){
-        try{
-            Account account = accountService.createAccount(accountRequest);
+    public ResponseEntity<AccountResponse> createAccount(@RequestBody @Valid AccountRequest accountRequest){
+        Account account = accountService.createAccount(accountRequest);
+        AccountResponse response = new AccountResponse(account.getId(), account.getCustomer().getId(), account.getBalances());
 
-            return new ResponseEntity<>(account, HttpStatus.CREATED);
-        }catch (IllegalStateException exception){
-            return new ResponseEntity<>("Customer not found", HttpStatus.NOT_FOUND);
-        }
+        return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 }
