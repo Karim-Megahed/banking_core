@@ -1,16 +1,11 @@
 package com.example.bank.balance;
 
 import com.example.bank.account.Account;
-import com.example.bank.transaction.Transaction;
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
-//@Data
 @Getter
 @Setter
 @Builder
@@ -41,11 +36,4 @@ public class Balance {
     private Float amount;
     @Enumerated(EnumType.STRING)
     private BalanceCurrency currency;
-//    @OneToMany(
-//            mappedBy = "balance",
-//            orphanRemoval = true,
-//            cascade = CascadeType.ALL
-//    )
-//    @JsonManagedReference
-//    private List<Transaction> transactions = new ArrayList<>();
 }

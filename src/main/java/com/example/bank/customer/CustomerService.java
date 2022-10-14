@@ -10,10 +10,6 @@ import java.util.List;
 public class CustomerService {
     private final CustomerRepository customerRepository;
 
-    public List<Customer> getCustomers(){
-        return customerRepository.findAll();
-    }
-
     public void createCustomer(CustomerRequest request){
         Customer customer = Customer.builder()
                 .firstName(request.getFirstName())
