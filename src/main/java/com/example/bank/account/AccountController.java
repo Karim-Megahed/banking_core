@@ -1,12 +1,14 @@
 package com.example.bank.account;
 
 import com.example.bank.exception.ApplicationCustomException;
+import com.example.bank.transaction.TransactionResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @RestController
 @AllArgsConstructor
@@ -28,5 +30,11 @@ public class AccountController {
         AccountResponse response = new AccountResponse(account.getId(), account.getCustomer().getId(), account.getBalances());
 
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @GetMapping(path = "{accountId}/transactions")
+    public ResponseEntity<Object> getAccountTransactions(@PathVariable("accountId") Integer accountId) throws ApplicationCustomException {
+        List<TransactionResponse> transactions = accountService.getAccountTransactions(accountId);
+        return new ResponseEntity<>(transactions, HttpStatus.OK);
     }
 }

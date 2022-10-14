@@ -17,7 +17,7 @@ public class TransactionService {
     private final BalanceService balanceService;
     private final AccountService accountService;
 
-    public Transaction createTransaction(TransactionRequest request) throws ApplicationCustomException {
+    public TransactionCreationResponse createTransaction(TransactionRequest request) throws ApplicationCustomException {
         if(request.getAmount() <= 0){
             throw new ApplicationCustomException("Amount should larger than zero!");
         }
@@ -39,15 +39,20 @@ public class TransactionService {
                 .direction(request.getDirection())
                 .amount(request.getAmount())
                 .balance(balance)
+                .account(account)
                 .description(request.getDescription())
                 .build();
         transactionRepository.saveAndFlush(transaction);
 
-        return transaction;
-    }
+        TransactionCreationResponse transactionCreationResponse = new TransactionCreationResponse(
+                account.getId(),
+                transaction.getId(),
+                transaction.getAmount(),
+                transaction.getDirection(),
+                transaction.getDescription(),
+                balance.getAmount()
+        );
 
-    public Transaction getTransaction(Integer id) throws ApplicationCustomException {
-        return transactionRepository.findById(id)
-                .orElseThrow(() -> new ApplicationCustomException("Transaction not found"));
+        return transactionCreationResponse;
     }
 }

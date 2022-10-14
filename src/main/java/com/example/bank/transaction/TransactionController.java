@@ -14,19 +14,10 @@ import javax.validation.Valid;
 public class TransactionController {
     private final TransactionService transactionService;
 
-    @GetMapping(path = "{transactionId}")
-    public Transaction getTransaction(@PathVariable("transactionId") Integer transactionId) throws ApplicationCustomException {
-        return transactionService.getTransaction(transactionId);
-    }
-
     @PostMapping
-    public ResponseEntity<Object> createTransaction(@RequestBody @Valid TransactionRequest transactionRequest){
-        try{
-            Transaction transaction = transactionService.createTransaction(transactionRequest);
+    public ResponseEntity<TransactionCreationResponse> createTransaction(@RequestBody @Valid TransactionRequest transactionRequest) throws ApplicationCustomException {
+        TransactionCreationResponse transaction = transactionService.createTransaction(transactionRequest);
 
-            return new ResponseEntity<>(transaction, HttpStatus.CREATED);
-        } catch (ApplicationCustomException exception) {
-            throw new RuntimeException(exception);
-        }
+        return new ResponseEntity<>(transaction, HttpStatus.CREATED);
     }
 }

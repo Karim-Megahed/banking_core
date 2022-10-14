@@ -1,5 +1,6 @@
 package com.example.bank.transaction;
 
+import com.example.bank.account.Account;
 import com.example.bank.balance.Balance;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
@@ -39,9 +40,15 @@ public class Transaction {
     @ManyToOne
     @JoinColumn(
             name = "balance_id",
-//            nullable = false,
+            nullable = false,
             referencedColumnName = "id"
     )
-//    @JsonBackReference
     private Balance balance;
+    @ManyToOne
+    @JoinColumn(
+            name = "account_id",
+            nullable = false,
+            referencedColumnName = "id"
+    )
+    private Account account;
 }
