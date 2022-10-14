@@ -1,6 +1,6 @@
 package com.example.bank.transaction;
 
-import com.example.bank.exception.ModelNotFoundException;
+import com.example.bank.exception.ApplicationCustomException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +15,7 @@ public class TransactionController {
     private final TransactionService transactionService;
 
     @GetMapping(path = "{transactionId}")
-    public Transaction getTransaction(@PathVariable("transactionId") Integer transactionId){
+    public Transaction getTransaction(@PathVariable("transactionId") Integer transactionId) throws ApplicationCustomException {
         return transactionService.getTransaction(transactionId);
     }
 
@@ -25,7 +25,7 @@ public class TransactionController {
             Transaction transaction = transactionService.createTransaction(transactionRequest);
 
             return new ResponseEntity<>(transaction, HttpStatus.CREATED);
-        } catch (ModelNotFoundException exception) {
+        } catch (ApplicationCustomException exception) {
             throw new RuntimeException(exception);
         }
     }

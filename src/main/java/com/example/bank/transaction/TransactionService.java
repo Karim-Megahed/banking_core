@@ -5,7 +5,7 @@ import com.example.bank.account.AccountService;
 import com.example.bank.balance.Balance;
 import com.example.bank.balance.BalanceRepository;
 import com.example.bank.balance.BalanceService;
-import com.example.bank.exception.ModelNotFoundException;
+import com.example.bank.exception.ApplicationCustomException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,19 +17,23 @@ public class TransactionService {
     private final BalanceService balanceService;
     private final AccountService accountService;
 
-    public Transaction createTransaction(TransactionRequest request) throws ModelNotFoundException {
+    public Transaction createTransaction(TransactionRequest request) throws ApplicationCustomException {
+        if(request.getAmount() <= 0){
+            throw new ApplicationCustomException("Amount should larger than zero!");
+        }
+
         Account account = accountService.getAccount(request.getAccountId());
         Balance balance = balanceService.getBalance(account, request.getCurrency());
-        Float newAmount = request.getDirection() == TransactionDirection.IN
+        float newAmount = request.getDirection() == TransactionDirection.IN
                 ? balance.getAmount() + request.getAmount()
                 : balance.getAmount() - request.getAmount();
 
+        if(newAmount < 0){
+            throw new ApplicationCustomException("Insufficient funds!");
+        }
+
         balance.setAmount(newAmount);
         balanceRepository.saveAndFlush(balance);
-
-        if (balance.getId() == null){
-            System.out.println("Balance is empty");
-        }
 
         Transaction transaction = Transaction.builder()
                 .direction(request.getDirection())
@@ -42,7 +46,8 @@ public class TransactionService {
         return transaction;
     }
 
-    public Transaction getTransaction(Integer id) {
-        return transactionRepository.findById(id).get();
+    public Transaction getTransaction(Integer id) throws ApplicationCustomException {
+        return transactionRepository.findById(id)
+                .orElseThrow(() -> new ApplicationCustomException("Transaction not found"));
     }
 }
