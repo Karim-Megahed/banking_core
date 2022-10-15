@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Data
 @Builder
@@ -25,7 +26,16 @@ public class Customer {
     )
 
     private Integer id;
+    @NotBlank
+    @Column(nullable = false)
     private String firstName;
+    @NotBlank
+    @Column(nullable = false)
     private String lastName;
+    @NotBlank
+    @Column(nullable = false, unique = true)
     private String email;
+
+    public Customer(String firstName, String lastName, String email) {
+    }
 }
