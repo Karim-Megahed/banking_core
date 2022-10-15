@@ -16,9 +16,9 @@ import java.util.List;
 public class AccountController {
     private final AccountService accountService;
 
-    @GetMapping(path = "{customerId}")
-    public ResponseEntity<AccountResponse> getAccount(@PathVariable("customerId") Integer customerId) throws ApplicationCustomException {
-        Account account = accountService.getAccount(customerId);
+    @GetMapping(path = "{accountId}")
+    public ResponseEntity<AccountResponse> getAccount(@PathVariable("accountId") Integer accountId) throws ApplicationCustomException {
+        Account account = accountService.getAccount(accountId);
         AccountResponse response = new AccountResponse(account.getId(), account.getCustomer().getId(), account.getBalances());
 
         return new ResponseEntity<>(response, HttpStatus.OK);
