@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 public class CustomerService {
     private final CustomerRepository customerRepository;
 
-    public void createCustomer(CustomerRequest request){
+    public Customer createCustomer(CustomerRequest request){
         Customer customer = Customer.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
@@ -16,5 +16,7 @@ public class CustomerService {
                 .build();
 
         customerRepository.saveAndFlush(customer);
+
+        return customer;
     }
 }

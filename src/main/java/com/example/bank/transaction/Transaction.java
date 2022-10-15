@@ -28,9 +28,12 @@ public class Transaction {
     )
 
     private Integer id;
+    @Column(nullable = false)
     private Float amount;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TransactionDirection direction;
+    @Column(nullable = false)
     private String description;
     @ManyToOne
     @JoinColumn(

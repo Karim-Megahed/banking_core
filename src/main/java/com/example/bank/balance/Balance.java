@@ -33,7 +33,9 @@ public class Balance {
     )
     @JsonBackReference
     private Account account;
+    @Column(nullable = false)
     private Float amount;
+    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private BalanceCurrency currency;
 }

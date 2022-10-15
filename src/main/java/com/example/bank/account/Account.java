@@ -31,8 +31,13 @@ public class Account {
 
     private Integer id;
     @OneToOne(targetEntity = Customer.class)
-    @JoinColumn(name = "customer_id", referencedColumnName = "id")
+    @JoinColumn(
+            name = "customer_id",
+            referencedColumnName = "id",
+            nullable = false
+    )
     private Customer customer;
+    @Column(nullable = false)
     private String country;
     @OneToMany(
             mappedBy = "account",
