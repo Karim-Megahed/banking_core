@@ -6,6 +6,7 @@ import com.example.bank.balance.BalanceService;
 import com.example.bank.customer.Customer;
 import com.example.bank.customer.CustomerRepository;
 import com.example.bank.exception.ApplicationCustomException;
+import com.example.bank.rabbitmq.MessagePublisher;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +19,7 @@ public class AccountService {
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
     private final BalanceService balanceService;
+    private final MessagePublisher messagePublisher;
 
     public Account getAccount(Integer id) throws ApplicationCustomException {
         return accountRepository.findById(id)
@@ -34,6 +36,8 @@ public class AccountService {
                 .build();
 
         accountRepository.saveAndFlush(account);
+
+        messagePublisher.publishMessage(request);
 
         for (BalanceCurrency currency : request.getCurrencies()) {
             balances.add(balanceService.createBalance(account, currency));

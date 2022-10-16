@@ -1,5 +1,6 @@
 package com.example.bank.customer;
 
+import com.example.bank.rabbitmq.MessagePublisher;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class CustomerService {
     private final CustomerRepository customerRepository;
+    private final MessagePublisher messagePublisher;
 
     public Customer createCustomer(CustomerRequest request){
         Customer customer = Customer.builder()
@@ -16,6 +18,8 @@ public class CustomerService {
                 .build();
 
         customerRepository.saveAndFlush(customer);
+
+        messagePublisher.publishMessage(request);
 
         return customer;
     }
