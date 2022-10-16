@@ -4,7 +4,7 @@ spring:
     application:
         name: bank
     datasource:
-        url: jdbc:postgresql://localhost:5432/bank
+        url: jdbc:postgresql://localhost:5432/postgres
         username: root
         password: password
     jpa:
