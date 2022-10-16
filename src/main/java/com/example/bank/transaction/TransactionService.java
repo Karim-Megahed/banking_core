@@ -9,6 +9,8 @@ import com.example.bank.exception.ApplicationCustomException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
 public class TransactionService {
@@ -17,12 +19,27 @@ public class TransactionService {
     private final BalanceService balanceService;
     private final AccountService accountService;
 
-    public TransactionCreationResponse createTransaction(TransactionRequest request) throws ApplicationCustomException {
+    public List<TransactionResponse> getAccountTransactions(Integer accountId) throws ApplicationCustomException {
+        accountService.getAccount(accountId);
+
+        return transactionRepository.findByAccountId(accountId)
+                .stream()
+                .map((Transaction transaction) -> new TransactionResponse(
+                                transaction.getAccount().getId(),
+                                transaction.getId(),
+                                transaction.getAmount(),
+                                transaction.getDirection(),
+                                transaction.getDescription()
+                        )
+                ).toList();
+    }
+
+    public TransactionCreationResponse createTransaction(Integer accountId,TransactionRequest request) throws ApplicationCustomException {
         if(request.getAmount() <= 0){
             throw new ApplicationCustomException("Amount should larger than zero!");
         }
 
-        Account account = accountService.getAccount(request.getAccountId());
+        Account account = accountService.getAccount(accountId);
         Balance balance = balanceService.getBalance(account, request.getCurrency());
         float newAmount = request.getDirection() == TransactionDirection.IN
                 ? balance.getAmount() + request.getAmount()

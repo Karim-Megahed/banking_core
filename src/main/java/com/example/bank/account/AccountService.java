@@ -6,9 +6,6 @@ import com.example.bank.balance.BalanceService;
 import com.example.bank.customer.Customer;
 import com.example.bank.customer.CustomerRepository;
 import com.example.bank.exception.ApplicationCustomException;
-import com.example.bank.transaction.Transaction;
-import com.example.bank.transaction.TransactionRepository;
-import com.example.bank.transaction.TransactionResponse;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,27 +17,11 @@ import java.util.List;
 public class AccountService {
     private final AccountRepository accountRepository;
     private final CustomerRepository customerRepository;
-    private final TransactionRepository transactionRepository;
     private final BalanceService balanceService;
 
     public Account getAccount(Integer id) throws ApplicationCustomException {
         return accountRepository.findById(id)
                 .orElseThrow(() ->  new ApplicationCustomException("Account not found!"));
-    }
-
-    public List<TransactionResponse> getAccountTransactions(Integer accountId) throws ApplicationCustomException {
-        getAccount(accountId);
-
-        return transactionRepository.findByAccountId(accountId)
-                .stream()
-                .map((Transaction transaction) -> new TransactionResponse(
-                        transaction.getAccount().getId(),
-                        transaction.getId(),
-                        transaction.getAmount(),
-                        transaction.getDirection(),
-                        transaction.getDescription()
-                    )
-                ).toList();
     }
 
     public Account createAccount(AccountRequest request) throws ApplicationCustomException {

@@ -10,8 +10,6 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class TransactionRequest {
-    @NotNull(message = "Account id is invalid!")
-    private Integer accountId;
     @NotBlank(message = "Description is invalid!")
     private String description;
     @NotNull(message = "Currency is invalid!")
