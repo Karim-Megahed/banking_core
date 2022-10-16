@@ -15,7 +15,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -36,7 +35,7 @@ public class AccountIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void itShouldCreateAndFetchAccountSuccessfully() throws Exception {
+    void itShouldCreateAndRetrieveAccountSuccessfully() throws Exception {
         CustomerRequest customerRequest = new CustomerRequest("karim", "megahed", FakeEmail());
         Customer customer = customerService.createCustomer(customerRequest);
         List<BalanceCurrency> currencies = Arrays.asList(BalanceCurrency.EUR, BalanceCurrency.GBP);
@@ -45,15 +44,12 @@ public class AccountIntegrationTest {
         MvcResult accountCreationResult = mockMvc.perform(post("/api/v1/accounts")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(Objects.requireNonNull(ObjectToJson(accountRequest))))
-                .andDo(MockMvcResultHandlers.print())
                 .andExpect(status().isCreated())
                 .andReturn();
         AccountResponse accountCreationResponse = JsonToObject(accountCreationResult);
 
         MvcResult accountFetchingResult = mockMvc.perform(get("/api/v1/accounts/" + accountCreationResponse.getAccountId())
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(ObjectToJson(accountRequest))))
-                .andDo(MockMvcResultHandlers.print())
+                .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
         AccountResponse accountFetchingResponse = JsonToObject(accountFetchingResult);
