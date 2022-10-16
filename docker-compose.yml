@@ -5,6 +5,9 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
+      APP_DB_USER: postgres
+      APP_DB_PASS: password
+      APP_DB_NAME: bank
       PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
@@ -14,11 +17,13 @@ services:
       - postgres
     restart: unless-stopped
   rabbitmq:
-    image: rabbitmq:3.9.11-management-alpine
     container_name: rabbitmq
+    image: rabbitmq:3.9.11-management-alpine
     ports:
       - "5672:5672"
       - "15672:15672"
+    networks:
+      - rabbitmq
   pgadmin:
     container_name: pgadmin
     image: dpage/pgadmin4
@@ -33,10 +38,28 @@ services:
     networks:
       - postgres
     restart: unless-stopped
+  backend:
+    container_name: backend
+    build:
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bank
+      SPRING_RABBITMQ_HOST: rabbitmq
+    networks:
+      - postgres
+      - rabbitmq
+    depends_on:
+      - postgres
+      - rabbitmq
+      - pgadmin
+
 networks:
   postgres:
     driver: bridge
-
+  rabbitmq:
+    driver: bridge
 volumes:
   postgres:
   pgadmin:
