@@ -36,7 +36,7 @@ public class AccountIntegrationTest {
     private ObjectMapper objectMapper;
 
     @Test
-    void itShouldCreateAccountSuccessfully() throws Exception {
+    void itShouldCreateAndFetchAccountSuccessfully() throws Exception {
         CustomerRequest customerRequest = new CustomerRequest("karim", "megahed", FakeEmail());
         Customer customer = customerService.createCustomer(customerRequest);
         List<BalanceCurrency> currencies = Arrays.asList(BalanceCurrency.EUR, BalanceCurrency.GBP);
@@ -58,7 +58,8 @@ public class AccountIntegrationTest {
                 .andReturn();
         AccountResponse accountFetchingResponse = JsonToObject(accountFetchingResult);
 
-        assertThat(accountFetchingResponse.equals(accountCreationResponse));
+        assertThat(accountFetchingResponse).usingRecursiveComparison().isEqualTo(accountCreationResponse);
+        assertThat(accountFetchingResponse.getBalances().size()).isEqualTo(currencies.size());
     }
 
     private String FakeEmail(){
