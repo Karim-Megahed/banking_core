@@ -5,10 +5,6 @@ services:
     environment:
       POSTGRES_USER: root
       POSTGRES_PASSWORD: password
-      APP_DB_USER: postgres
-      APP_DB_PASS: password
-      APP_DB_NAME: bank
-      PGDATA: /data/postgres
     volumes:
       - postgres:/data/postgres
     ports:
@@ -24,20 +20,6 @@ services:
       - "15672:15672"
     networks:
       - rabbitmq
-  pgadmin:
-    container_name: pgadmin
-    image: dpage/pgadmin4
-    environment:
-      PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin4@pgadmin.org}
-      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-admin}
-      PGADMIN_CONFIG_SERVER_MODE: 'False'
-    volumes:
-      - pgadmin:/var/lib/pgadmin
-    ports:
-      - "5050:80"
-    networks:
-      - postgres
-    restart: unless-stopped
   backend:
     container_name: backend
     build:
@@ -45,7 +27,7 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/bank
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/postgres
       SPRING_RABBITMQ_HOST: rabbitmq
     networks:
       - postgres
@@ -53,8 +35,6 @@ services:
     depends_on:
       - postgres
       - rabbitmq
-      - pgadmin
-
 networks:
   postgres:
     driver: bridge
@@ -62,4 +42,3 @@ networks:
     driver: bridge
 volumes:
   postgres:
-  pgadmin:
