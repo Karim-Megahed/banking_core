@@ -23,13 +23,13 @@ public class AccountService {
 
     public Account getAccount(Integer id) throws ApplicationCustomException {
         return accountRepository.findById(id)
-                .orElseThrow(() ->  new ApplicationCustomException("Account not found!"));
+                .orElseThrow(() -> new ApplicationCustomException("Account not found!"));
     }
 
     public Account createAccount(AccountRequest request) throws ApplicationCustomException {
         List<Balance> balances = new ArrayList<>();
         Customer customer = customerRepository.findById(request.getCustomerId())
-                .orElseThrow(() ->  new ApplicationCustomException("Customer not found!"));
+                .orElseThrow(() -> new ApplicationCustomException("Customer not found!"));
         Account account = Account.builder()
                 .customer(customer)
                 .country(request.getCountry())

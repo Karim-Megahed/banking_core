@@ -15,14 +15,14 @@ public class BalanceService {
     public Balance getBalance(Account account, BalanceCurrency currency) throws ApplicationCustomException {
         List<Balance> balances = balanceRepository.findByCurrencyAndAccountId(currency, account.getId());
 
-        if(balances.size() == 0){
+        if (balances.size() == 0) {
             throw new ApplicationCustomException("Balance cannot be found!");
         }
 
         return balances.get(0);
     }
 
-    public Balance createBalance(Account account, BalanceCurrency currency){
+    public Balance createBalance(Account account, BalanceCurrency currency) {
         Balance balance = Balance.builder()
                 .account(account)
                 .currency(currency)

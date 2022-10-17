@@ -1,6 +1,6 @@
 package com.example.bank.transaction;
 
-public class TransactionCreationResponse extends TransactionResponse{
+public class TransactionCreationResponse extends TransactionResponse {
     private Float balanceAfterTransaction;
 
     public TransactionCreationResponse(Integer accountId, Integer transactionId, Float amount, TransactionDirection direction, String description, Float balanceAfterTransaction) {
@@ -12,7 +12,7 @@ public class TransactionCreationResponse extends TransactionResponse{
         return balanceAfterTransaction;
     }
 
-    public void setBalanceAfterTransaction(Float balanceAfterTransaction){
+    public void setBalanceAfterTransaction(Float balanceAfterTransaction) {
         this.balanceAfterTransaction = balanceAfterTransaction;
     }
 }

@@ -44,16 +44,16 @@ public class TransactionIntegrationTest {
 
         AccountRequest accountRequest = new AccountRequest(customer.getId(), "DE", currencies);
         MvcResult accountCreationResult = mockMvc.perform(post("/api/v1/accounts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(ObjectToJson(accountRequest))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Objects.requireNonNull(ObjectToJson(accountRequest))))
                 .andExpect(status().isCreated())
                 .andReturn();
         AccountResponse accountCreationResponse = JsonToAccountObject(accountCreationResult);
 
         TransactionRequest transactionRequest = new TransactionRequest("deposit", BalanceCurrency.EUR, TransactionDirection.IN, 10F);
         MvcResult transactionCreationResult = mockMvc.perform(post("/api/v1/accounts/" + accountCreationResponse.getAccountId() + "/transactions")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(ObjectToJson(transactionRequest))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Objects.requireNonNull(ObjectToJson(transactionRequest))))
                 .andExpect(status().isCreated())
                 .andReturn();
         TransactionResponse transactionCreationResponse = JsonToTransactionObject(transactionCreationResult);
@@ -61,7 +61,7 @@ public class TransactionIntegrationTest {
         assertThat(accountCreationResponse.getAccountId()).isEqualTo(transactionCreationResponse.getAccountId());
 
         mockMvc.perform(get("/api/v1/accounts/" + transactionCreationResponse.getAccountId() + "/transactions")
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
     }
@@ -71,13 +71,13 @@ public class TransactionIntegrationTest {
         TransactionRequest transactionRequest = new TransactionRequest("deposit", BalanceCurrency.EUR, TransactionDirection.IN, 10F);
 
         mockMvc.perform(post("/api/v1/accounts/9997555/transactions")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(ObjectToJson(transactionRequest))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Objects.requireNonNull(ObjectToJson(transactionRequest))))
                 .andExpect(status().isBadRequest())
                 .andReturn();
     }
 
-    private String FakeEmail(){
+    private String FakeEmail() {
         FakeValuesService fakeValuesService = new FakeValuesService(
                 new Locale("en-GB"), new RandomService()
         );

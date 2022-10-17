@@ -36,8 +36,8 @@ public class TransactionService {
                 ).toList();
     }
 
-    public TransactionCreationResponse createTransaction(Integer accountId,TransactionRequest request) throws ApplicationCustomException {
-        if(request.getAmount() <= 0){
+    public TransactionCreationResponse createTransaction(Integer accountId, TransactionRequest request) throws ApplicationCustomException {
+        if (request.getAmount() <= 0) {
             throw new ApplicationCustomException("Amount should larger than zero!");
         }
 
@@ -47,7 +47,7 @@ public class TransactionService {
                 ? balance.getAmount() + request.getAmount()
                 : balance.getAmount() - request.getAmount();
 
-        if(newAmount < 0){
+        if (newAmount < 0) {
             throw new ApplicationCustomException("Insufficient funds!");
         }
 

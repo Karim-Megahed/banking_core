@@ -10,7 +10,7 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
     private final MessagePublisher messagePublisher;
 
-    public Customer createCustomer(CustomerRequest request){
+    public Customer createCustomer(CustomerRequest request) {
         Customer customer = Customer.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())

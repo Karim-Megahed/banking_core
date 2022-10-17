@@ -42,14 +42,14 @@ public class AccountIntegrationTest {
 
         AccountRequest accountRequest = new AccountRequest(customer.getId(), "DE", currencies);
         MvcResult accountCreationResult = mockMvc.perform(post("/api/v1/accounts")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(Objects.requireNonNull(ObjectToJson(accountRequest))))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(Objects.requireNonNull(ObjectToJson(accountRequest))))
                 .andExpect(status().isCreated())
                 .andReturn();
         AccountResponse accountCreationResponse = JsonToObject(accountCreationResult);
 
         MvcResult accountFetchingResult = mockMvc.perform(get("/api/v1/accounts/" + accountCreationResponse.getAccountId())
-                .accept(MediaType.APPLICATION_JSON))
+                        .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andReturn();
         AccountResponse accountFetchingResponse = JsonToObject(accountFetchingResult);
@@ -58,7 +58,7 @@ public class AccountIntegrationTest {
         assertThat(accountFetchingResponse.getBalances().size()).isEqualTo(currencies.size());
     }
 
-    private String FakeEmail(){
+    private String FakeEmail() {
         FakeValuesService fakeValuesService = new FakeValuesService(
                 new Locale("en-GB"), new RandomService()
         );
