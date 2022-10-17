@@ -43,9 +43,7 @@ public class TransactionService {
 
         Account account = accountService.getAccount(accountId);
         Balance balance = balanceService.getBalance(account, request.getCurrency());
-        float newAmount = request.getDirection() == TransactionDirection.IN
-                ? balance.getAmount() + request.getAmount()
-                : balance.getAmount() - request.getAmount();
+        float newAmount = calculateNewAmount(request.getDirection(), request.getAmount(), balance.getAmount());
 
         if (newAmount < 0) {
             throw new ApplicationCustomException("Insufficient funds!");
@@ -54,18 +52,11 @@ public class TransactionService {
         balance.setAmount(newAmount);
         balanceRepository.saveAndFlush(balance);
 
-        Transaction transaction = Transaction.builder()
-                .direction(request.getDirection())
-                .amount(request.getAmount())
-                .balance(balance)
-                .account(account)
-                .description(request.getDescription())
-                .build();
-        transactionRepository.saveAndFlush(transaction);
+        Transaction transaction = saveTransaction(request, balance, account);
 
         messagePublisher.publishMessage(request);
 
-        TransactionCreationResponse transactionCreationResponse = new TransactionCreationResponse(
+        return new TransactionCreationResponse(
                 account.getId(),
                 transaction.getId(),
                 transaction.getAmount(),
@@ -73,7 +64,25 @@ public class TransactionService {
                 transaction.getDescription(),
                 balance.getAmount()
         );
+    }
 
-        return transactionCreationResponse;
+    private Float calculateNewAmount(TransactionDirection direction, Float requestAmount, Float currentAmount) {
+        return direction == TransactionDirection.IN
+                ? currentAmount + requestAmount
+                : currentAmount - requestAmount;
+    }
+
+    private Transaction saveTransaction(TransactionRequest request, Balance balance, Account account) {
+        Transaction transaction = Transaction.builder()
+                .direction(request.getDirection())
+                .amount(request.getAmount())
+                .balance(balance)
+                .account(account)
+                .description(request.getDescription())
+                .build();
+
+        transactionRepository.saveAndFlush(transaction);
+
+        return transaction;
     }
 }
