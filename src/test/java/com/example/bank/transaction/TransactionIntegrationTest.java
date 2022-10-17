@@ -17,7 +17,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import java.io.UnsupportedEncodingException;
 import java.util.*;
@@ -64,6 +63,17 @@ public class TransactionIntegrationTest {
         mockMvc.perform(get("/api/v1/accounts/" + transactionCreationResponse.getAccountId() + "/transactions")
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
+                .andReturn();
+    }
+
+    @Test
+    void itThrowAnErrorWhenAccountIdDoesNotExist() throws Exception {
+        TransactionRequest transactionRequest = new TransactionRequest("deposit", BalanceCurrency.EUR, TransactionDirection.IN, 10F);
+
+        mockMvc.perform(post("/api/v1/accounts/9997555/transactions")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(Objects.requireNonNull(ObjectToJson(transactionRequest))))
+                .andExpect(status().isBadRequest())
                 .andReturn();
     }
 
