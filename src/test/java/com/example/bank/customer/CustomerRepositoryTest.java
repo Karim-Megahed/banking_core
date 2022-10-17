@@ -28,35 +28,4 @@ public class CustomerRepositoryTest {
                 .isPresent()
                 .hasValueSatisfying(c -> assertThat(c).isEqualTo(customer));
     }
-
-    @Test
-    void itShouldNotSaveCustomerWhenFirstNameIsNull() {
-        Customer customer = new Customer( 1,null, "megahed", "karim@gmail.com");
-        customerRepository.save(customer);
-
-        Optional<Customer> customerFromDB = customerRepository.findById(customer.getId());
-
-        assertThat(customerFromDB).isEmpty();
-
-    }
-
-    @Test
-    void itShouldNotSaveCustomerWhenLastNameIsNull() {
-        Customer customer = new Customer( 1,"karim", null, "karim@gmail.com");
-        customerRepository.save(customer);
-
-        Optional<Customer> customerFromDB = customerRepository.findById(customer.getId());
-
-        assertThat(customerFromDB).isEmpty();
-    }
-
-    @Test
-    void itShouldNotSaveCustomerWhenEmailIsNull() {
-        Customer customer = new Customer( 1,"karim", "megahed", null);
-        customerRepository.save(customer);
-
-        Optional<Customer> customerFromDB = customerRepository.findById(customer.getId());
-
-        assertThat(customerFromDB).isEmpty();
-    }
 }
