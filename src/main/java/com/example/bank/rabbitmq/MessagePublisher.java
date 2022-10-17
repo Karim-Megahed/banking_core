@@ -12,6 +12,6 @@ public class MessagePublisher {
     private RabbitTemplate template;
 
     public void publishMessage(Object message) {
-        template.convertAndSend(MQConfig.EXCHANGE, MQConfig.ROUTING_KEY, message);
+        template.convertAndSend(RabbitMQConfig.EXCHANGE, RabbitMQConfig.ROUTING_KEY, message);
     }
 }
